@@ -79,6 +79,10 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-prathibha-primary to-prathibha-secondary;
   }
 
+  .text-gradient-logo {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#9b87f5] via-[#D946EF] to-[#F97316];
+  }
+
   .glass-panel {
     @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl;
   }
@@ -100,5 +104,9 @@
   .animate-on-scroll.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  .nav-gradient {
+    @apply bg-gradient-to-r from-[#0D0D0D]/0 via-[#191429]/80 to-[#0D0D0D]/0;
   }
 }

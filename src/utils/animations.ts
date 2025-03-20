@@ -48,6 +48,45 @@ export const staggerFadeInUp = (elements: NodeListOf<Element>, staggerTime: numb
   );
 };
 
+// New animation specifically for navbar links
+export const staggerNavLinks = (elements: NodeListOf<Element>, staggerTime: number = 0.1) => {
+  gsap.fromTo(
+    elements,
+    { y: -20, opacity: 0 },
+    { 
+      y: 0, 
+      opacity: 1, 
+      duration: 0.5, 
+      stagger: staggerTime,
+      ease: "power2.out"
+    }
+  );
+};
+
+// Add hover animation for navbar links
+export const addNavLinkHoverEffects = () => {
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  navLinks.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      gsap.to(link, { 
+        scale: 1.1, 
+        color: '#9b87f5', 
+        duration: 0.3, 
+        ease: "power2.out" 
+      });
+    });
+    
+    link.addEventListener('mouseleave', () => {
+      gsap.to(link, { 
+        scale: 1, 
+        duration: 0.3, 
+        ease: "power2.out" 
+      });
+    });
+  });
+};
+
 export const observeElementsAndAddClass = () => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

@@ -10,7 +10,7 @@ import BlogSection from '@/components/BlogSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
-import { observeElementsAndAddClass } from '@/utils/animations';
+import { observeElementsAndAddClass, addNavLinkHoverEffects } from '@/utils/animations';
 
 // Add packages
 import * as THREE from 'three';
@@ -22,6 +22,9 @@ const Index = () => {
   useEffect(() => {
     // Initialize animations
     const cleanup = observeElementsAndAddClass();
+    
+    // Add navbar link hover effects
+    addNavLinkHoverEffects();
     
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

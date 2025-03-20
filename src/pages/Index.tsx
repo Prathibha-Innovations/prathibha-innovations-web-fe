@@ -56,8 +56,8 @@ const Index = () => {
       <HeroSection />
       <VisionMissionSection />
       <ClientsSection />
-      <BlogSection />
-      <ContactSection />
+      {/* <BlogSection /> */}
+      {/* <ContactSection /> */}
       <Footer />
       <ScrollToTop />
     </div>

@@ -1,9 +1,8 @@
-
-import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import * as THREE from 'three';
-import confetti from 'canvas-confetti';
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import * as THREE from "three";
+import confetti from "canvas-confetti";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,33 +21,36 @@ const HeroSection = () => {
 
   useEffect(() => {
     if (!containerRef.current) return;
-    
+
     // GSAP Animation
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    
-    tl.fromTo(headingRef.current, 
-      { y: 50, opacity: 0 }, 
+
+    tl.fromTo(
+      headingRef.current,
+      { y: 50, opacity: 0 },
       { y: 0, opacity: 1, duration: 1 }
     )
-    .fromTo(subheadingRef.current, 
-      { y: 30, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 1 }, 
-      "-=0.6"
-    )
-    .fromTo(ctaRef.current, 
-      { y: 20, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 0.8 }, 
-      "-=0.4"
-    );
+      .fromTo(
+        subheadingRef.current,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        "-=0.6"
+      )
+      .fromTo(
+        ctaRef.current,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
+        "-=0.4"
+      );
 
     // Animate background
     if (bgRef.current) {
       gsap.to(bgRef.current, {
-        backgroundPosition: '100% 100%',
+        backgroundPosition: "100% 100%",
         duration: 20,
         repeat: -1,
         yoyo: true,
-        ease: "sine.inOut"
+        ease: "sine.inOut",
       });
     }
 
@@ -67,21 +69,22 @@ const HeroSection = () => {
 
     // Camera setup
     const camera = new THREE.PerspectiveCamera(
-      75, 
-      threeContainerRef.current.clientWidth / threeContainerRef.current.clientHeight, 
-      0.1, 
+      75,
+      threeContainerRef.current.clientWidth /
+        threeContainerRef.current.clientHeight,
+      0.1,
       1000
     );
     camera.position.z = 5;
     cameraRef.current = camera;
 
     // Renderer setup
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: true 
+      antialias: true,
     });
     renderer.setSize(
-      threeContainerRef.current.clientWidth, 
+      threeContainerRef.current.clientWidth,
       threeContainerRef.current.clientHeight
     );
     renderer.setClearColor(0x000000, 0);
@@ -92,8 +95,8 @@ const HeroSection = () => {
     // Create objects
     // Cube
     const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-    const cubeMaterial = new THREE.MeshStandardMaterial({ 
-      color: 0xA7C1D9,
+    const cubeMaterial = new THREE.MeshStandardMaterial({
+      color: 0xa7c1d9,
       metalness: 0.5,
       roughness: 0.2,
     });
@@ -105,8 +108,8 @@ const HeroSection = () => {
 
     // Sphere
     const sphereGeometry = new THREE.SphereGeometry(0.7, 32, 32);
-    const sphereMaterial = new THREE.MeshStandardMaterial({ 
-      color: 0xD7D9D7,
+    const sphereMaterial = new THREE.MeshStandardMaterial({
+      color: 0xd7d9d7,
       metalness: 0.7,
       roughness: 0.1,
     });
@@ -117,8 +120,8 @@ const HeroSection = () => {
 
     // Torus
     const torusGeometry = new THREE.TorusGeometry(0.5, 0.2, 16, 50);
-    const torusMaterial = new THREE.MeshStandardMaterial({ 
-      color: 0xA7C1D9,
+    const torusMaterial = new THREE.MeshStandardMaterial({
+      color: 0xa7c1d9,
       metalness: 0.5,
       roughness: 0.2,
     });
@@ -132,11 +135,11 @@ const HeroSection = () => {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const light1 = new THREE.PointLight(0xA7C1D9, 1, 100);
+    const light1 = new THREE.PointLight(0xa7c1d9, 1, 100);
     light1.position.set(5, 5, 5);
     scene.add(light1);
 
-    const light2 = new THREE.PointLight(0xD7D9D7, 1, 100);
+    const light2 = new THREE.PointLight(0xd7d9d7, 1, 100);
     light2.position.set(-5, -5, 5);
     scene.add(light2);
 
@@ -161,18 +164,28 @@ const HeroSection = () => {
 
     // Handle resize
     const handleResize = () => {
-      if (!threeContainerRef.current || !cameraRef.current || !rendererRef.current) return;
-      
-      cameraRef.current.aspect = threeContainerRef.current.clientWidth / threeContainerRef.current.clientHeight;
+      if (
+        !threeContainerRef.current ||
+        !cameraRef.current ||
+        !rendererRef.current
+      )
+        return;
+
+      cameraRef.current.aspect =
+        threeContainerRef.current.clientWidth /
+        threeContainerRef.current.clientHeight;
       cameraRef.current.updateProjectionMatrix();
-      rendererRef.current.setSize(threeContainerRef.current.clientWidth, threeContainerRef.current.clientHeight);
+      rendererRef.current.setSize(
+        threeContainerRef.current.clientWidth,
+        threeContainerRef.current.clientHeight
+      );
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       if (threeContainerRef.current && canvasRef.current) {
         threeContainerRef.current.removeChild(canvasRef.current);
       }
@@ -185,7 +198,7 @@ const HeroSection = () => {
   const handleConfetti = () => {
     const end = Date.now() + 700;
 
-    const colors = ['#A7C1D9', '#D7D9D7', '#ffffff'];
+    const colors = ["#A7C1D9", "#D7D9D7", "#ffffff"];
 
     (function frame() {
       confetti({
@@ -193,78 +206,84 @@ const HeroSection = () => {
         angle: 60,
         spread: 55,
         origin: { x: 0.05, y: 0.7 },
-        colors: colors
+        colors: colors,
       });
       confetti({
         particleCount: 2,
         angle: 120,
         spread: 55,
         origin: { x: 0.95, y: 0.7 },
-        colors: colors
+        colors: colors,
       });
 
       if (Date.now() < end) {
         requestAnimationFrame(frame);
       }
-    }());
+    })();
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden" ref={containerRef}>
+    <section
+      id="home"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      ref={containerRef}
+    >
       {/* Background gradient overlay with animation */}
-      <div 
+      <div
         ref={bgRef}
         className="hero-bg absolute inset-0 bg-gradient-to-b from-prathibha-bg via-prathibha-bg to-prathibha-bg-alt"
-        style={{ 
-          backgroundSize: '200% 200%',
-          backgroundPosition: '0% 0%'
+        style={{
+          backgroundSize: "200% 200%",
+          backgroundPosition: "0% 0%",
         }}
       ></div>
-      
+
       {/* Animated particles background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           {[...Array(20)].map((_, i) => (
-            <div 
+            <div
               key={i}
               className="absolute rounded-full"
               style={{
                 width: `${Math.random() * 10 + 5}px`,
                 height: `${Math.random() * 10 + 5}px`,
-                backgroundColor: i % 2 === 0 ? '#A7C1D9' : '#D7D9D7',
+                backgroundColor: i % 2 === 0 ? "#A7C1D9" : "#D7D9D7",
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animation: `float ${Math.random() * 10 + 10}s linear infinite`,
-                opacity: Math.random() * 0.5 + 0.3
+                opacity: Math.random() * 0.5 + 0.3,
               }}
             ></div>
           ))}
         </div>
       </div>
-      
+
       {/* Three.js container */}
-      <div 
-        ref={threeContainerRef} 
+      <div
+        ref={threeContainerRef}
         className="absolute inset-0 pointer-events-none"
       ></div>
-      
+
       <div className="container mx-auto px-6 md:px-12 relative z-10 text-center pt-20">
         <div className="max-w-4xl mx-auto">
-          <h1 
+          <h1
             ref={headingRef}
             className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 leading-tight"
           >
-            Transforming Ideas into <span className="text-gradient">Digital Reality</span>
+            Where <span className="text-gradient">Experience</span> Meets
+            <span className="text-gradient"> Potential</span>—Together!
           </h1>
-          
-          <p 
+
+          <p
             ref={subheadingRef}
             className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto"
           >
-            Prathibha Innovations crafts premium digital experiences that merge aesthetics with functionality. We believe in simplicity, clarity, and attention to detail.
+            Pioneering revolutionary solutions through innovation, expertise,
+            and excellence. Transforming ideas into impactful realities.
           </p>
-          
-          <button 
+
+          <button
             ref={ctaRef}
             className="px-8 py-4 rounded-full bg-prathibha-primary text-black font-medium text-lg transition-all hover:shadow-[0_0_25px_rgba(167,193,217,0.5)] hover:translate-y-[-2px]"
             onMouseEnter={handleConfetti}
@@ -273,7 +292,7 @@ const HeroSection = () => {
           </button>
         </div>
       </div>
-      
+
       {/* Scroll indicator with animation */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-80 hover:opacity-100 transition-opacity">
         <p className="text-sm mb-2 font-light">Scroll to explore</p>

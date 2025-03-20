@@ -87,6 +87,49 @@ export const addNavLinkHoverEffects = () => {
   });
 };
 
+// Background animation for hero section
+export const animateHeroBackground = () => {
+  const heroBg = document.querySelector('.hero-bg');
+  
+  if (heroBg) {
+    gsap.fromTo(
+      heroBg,
+      { 
+        backgroundPosition: '0% 0%', 
+        opacity: 0.5 
+      },
+      { 
+        backgroundPosition: '100% 100%', 
+        opacity: 1,
+        duration: 20, 
+        repeat: -1, 
+        yoyo: true,
+        ease: "sine.inOut"
+      }
+    );
+  }
+};
+
+// Add smooth scrolling for all hash links
+export const initSmoothScrolling = () => {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (!targetId) return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (!targetElement) return;
+      
+      window.scrollTo({
+        top: targetElement.getBoundingClientRect().top + window.pageYOffset - 100,
+        behavior: 'smooth'
+      });
+    });
+  });
+};
+
 export const observeElementsAndAddClass = () => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

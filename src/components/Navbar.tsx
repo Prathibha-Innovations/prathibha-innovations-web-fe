@@ -67,6 +67,27 @@ const Navbar = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Handle smooth scroll when clicking on nav links
+  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    
+    const targetId = href.startsWith('#') ? href : `#${href}`;
+    const targetElement = document.querySelector(targetId);
+    
+    if (targetElement) {
+      // Close mobile menu if open
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+      
+      // Smooth scroll with animation
+      window.scrollTo({
+        top: targetElement.getBoundingClientRect().top + window.pageYOffset - 100,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <nav 
       className={cn(
@@ -79,6 +100,7 @@ const Navbar = () => {
         <a 
           ref={logoRef}
           href="#home" 
+          onClick={(e) => handleNavLinkClick(e, '#home')}
           className="text-2xl font-display font-bold text-gradient-logo transition-all duration-300 hover:scale-105"
         >
           Prathibha<span className="text-[#D946EF]">.</span>
@@ -90,6 +112,7 @@ const Navbar = () => {
             <a
               key={link.name}
               href={link.href}
+              onClick={(e) => handleNavLinkClick(e, link.href)}
               className="nav-link text-white/90 hover:text-[#9b87f5] text-sm font-medium transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#9b87f5] after:transition-all hover:after:w-full"
             >
               {link.name}
@@ -120,7 +143,10 @@ const Navbar = () => {
           <a
             key={link.name}
             href={link.href}
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => {
+              handleNavLinkClick(e, link.href);
+              setMobileMenuOpen(false);
+            }}
             className="text-white/90 hover:text-[#9b87f5] text-2xl font-medium py-4 border-b border-white/10 transition-colors duration-300"
           >
             {link.name}

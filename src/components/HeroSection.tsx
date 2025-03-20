@@ -18,6 +18,7 @@ const HeroSection = () => {
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const cubeRef = useRef<THREE.Mesh | null>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -39,6 +40,17 @@ const HeroSection = () => {
       { y: 0, opacity: 1, duration: 0.8 }, 
       "-=0.4"
     );
+
+    // Animate background
+    if (bgRef.current) {
+      gsap.to(bgRef.current, {
+        backgroundPosition: '100% 100%',
+        duration: 20,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+    }
 
     return () => {
       tl.kill();
@@ -199,8 +211,36 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden" ref={containerRef}>
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-prathibha-bg via-prathibha-bg to-prathibha-bg-alt"></div>
+      {/* Background gradient overlay with animation */}
+      <div 
+        ref={bgRef}
+        className="hero-bg absolute inset-0 bg-gradient-to-b from-prathibha-bg via-prathibha-bg to-prathibha-bg-alt"
+        style={{ 
+          backgroundSize: '200% 200%',
+          backgroundPosition: '0% 0%'
+        }}
+      ></div>
+      
+      {/* Animated particles background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          {[...Array(20)].map((_, i) => (
+            <div 
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                width: `${Math.random() * 10 + 5}px`,
+                height: `${Math.random() * 10 + 5}px`,
+                backgroundColor: i % 2 === 0 ? '#A7C1D9' : '#D7D9D7',
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animation: `float ${Math.random() * 10 + 10}s linear infinite`,
+                opacity: Math.random() * 0.5 + 0.3
+              }}
+            ></div>
+          ))}
+        </div>
+      </div>
       
       {/* Three.js container */}
       <div 
@@ -234,7 +274,7 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Scroll indicator */}
+      {/* Scroll indicator with animation */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-80 hover:opacity-100 transition-opacity">
         <p className="text-sm mb-2 font-light">Scroll to explore</p>
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1">

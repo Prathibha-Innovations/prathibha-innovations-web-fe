@@ -10,7 +10,12 @@ import BlogSection from '@/components/BlogSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
-import { observeElementsAndAddClass, addNavLinkHoverEffects } from '@/utils/animations';
+import { 
+  observeElementsAndAddClass, 
+  addNavLinkHoverEffects, 
+  initSmoothScrolling,
+  animateHeroBackground 
+} from '@/utils/animations';
 
 // Add packages
 import * as THREE from 'three';
@@ -26,23 +31,11 @@ const Index = () => {
     // Add navbar link hover effects
     addNavLinkHoverEffects();
     
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (!targetId) return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (!targetElement) return;
-        
-        window.scrollTo({
-          top: targetElement.getBoundingClientRect().top + window.pageYOffset - 100,
-          behavior: 'smooth'
-        });
-      });
-    });
+    // Initialize smooth scrolling
+    initSmoothScrolling();
+    
+    // Animate hero background
+    animateHeroBackground();
 
     return () => {
       cleanup();

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { fadeInUp, staggerNavLinks } from '@/utils/animations';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -18,6 +19,7 @@ const Navbar = () => {
   const logoRef = useRef<HTMLAnchorElement>(null);
   const navLinksRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +50,17 @@ const Navbar = () => {
         staggerNavLinks(links, 0.1);
       }
     }
+    
+    // Prevent body scroll when mobile menu is open
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [mobileMenuOpen]);
 
   const toggleMobileMenu = () => {
@@ -77,7 +90,7 @@ const Navbar = () => {
             <a
               key={link.name}
               href={link.href}
-              className="text-white/90 hover:text-[#9b87f5] text-sm font-medium transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#9b87f5] after:transition-all hover:after:w-full"
+              className="nav-link text-white/90 hover:text-[#9b87f5] text-sm font-medium transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#9b87f5] after:transition-all hover:after:w-full"
             >
               {link.name}
             </a>
@@ -87,21 +100,22 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={toggleMobileMenu}
-          className="md:hidden text-[#9b87f5] hover:text-[#D946EF] transition-colors duration-300 focus:outline-none"
+          className="md:hidden text-[#9b87f5] hover:text-[#D946EF] transition-colors duration-300 focus:outline-none z-50"
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Fixed positioned with backdrop-filter */}
       <div 
         ref={mobileMenuRef}
         className={cn(
-          "fixed inset-0 bg-gradient-to-b from-prathibha-bg to-[#191429] flex flex-col pt-24 px-8 z-40 transition-all duration-500 ease-in-out md:hidden",
-          mobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+          "fixed inset-0 backdrop-blur-xl bg-transparent z-40 flex flex-col pt-24 px-8 transition-all duration-500 ease-in-out md:hidden",
+          mobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         )}
       >
+        <div className="absolute inset-0 bg-gradient-to-b from-prathibha-bg/95 to-[#191429]/95 -z-10"></div>
         {navLinks.map((link) => (
           <a
             key={link.name}

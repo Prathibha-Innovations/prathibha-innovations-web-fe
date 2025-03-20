@@ -108,6 +108,25 @@ export const animateHeroBackground = () => {
       }
     );
   }
+  
+  // Add floating particles animation to hero section
+  const heroParticles = document.querySelector('.hero-particles');
+  if (heroParticles) {
+    const particles = heroParticles.querySelectorAll('.particle');
+    
+    particles.forEach((particle) => {
+      gsap.to(particle, {
+        y: 'random(-30, 30)',
+        x: 'random(-20, 20)',
+        rotation: 'random(-15, 15)',
+        duration: 'random(3, 8)',
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: 'random(0, 5)'
+      });
+    });
+  }
 };
 
 // Add smooth scrolling for all hash links
@@ -122,9 +141,29 @@ export const initSmoothScrolling = () => {
       const targetElement = document.querySelector(targetId);
       if (!targetElement) return;
       
-      window.scrollTo({
-        top: targetElement.getBoundingClientRect().top + window.pageYOffset - 100,
-        behavior: 'smooth'
+      // Close mobile menu if open
+      const mobileMenuButton = document.querySelector('.mobile-menu-button');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      
+      if (mobileMenu && mobileMenu.classList.contains('open')) {
+        mobileMenu.classList.remove('open');
+        document.body.classList.remove('overflow-hidden');
+        
+        // Toggle aria-expanded
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        if (mobileMenuButton) {
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+        }
+      }
+      
+      // Smooth scroll with animation
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: {
+          y: targetElement,
+          offsetY: 100
+        },
+        ease: "power3.inOut"
       });
     });
   });

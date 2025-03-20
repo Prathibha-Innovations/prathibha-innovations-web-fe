@@ -31,11 +31,18 @@ const Index = () => {
     // Add navbar link hover effects
     addNavLinkHoverEffects();
     
-    // Initialize smooth scrolling
+    // Initialize smooth scrolling with GSAP
     initSmoothScrolling();
     
-    // Animate hero background
+    // Animate hero background with particles
     animateHeroBackground();
+    
+    // When page first loads, add entrance animation for body
+    gsap.fromTo(
+      'body',
+      { opacity: 0 },
+      { opacity: 1, duration: 1, ease: 'power2.inOut' }
+    );
 
     return () => {
       cleanup();
